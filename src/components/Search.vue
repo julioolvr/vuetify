@@ -64,6 +64,15 @@
       reset() {
         Object.assign(this, INITIAL_STATE)
       }
+    },
+
+    // Lifecycle
+    created() {
+      this.query = location.pathname.match(/^\/(.*)/)[1]
+
+      if (this.query) {
+        this.search()
+      }
     }
   }
 </script>
