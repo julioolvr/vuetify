@@ -6,10 +6,8 @@
 
     <div><small>{{ found }}</small></div>
 
-    <ul v-show="results.length > 0 && !isLoading">
-      <li v-for="result in results">
-        <a :href="result.external_urls.spotify">{{ result.name }}</a>
-      </li>
+    <ul class="artists" v-show="results.length > 0 && !isLoading">
+      <artist v-for="result in results" :artist="result" :key="result.id" />
     </ul>
 
     <div v-show="results.length === 0 && !isLoading">No results found</div>
@@ -18,6 +16,7 @@
 </template>
 
 <script>
+  import Artist from './Artist.vue'
   import spotify from '../services/spotify'
 
   const INITIAL_STATE = {
@@ -28,6 +27,7 @@
 
   export default {
     name: 'Search',
+    components: { Artist },
 
     data() {
       return Object.assign({}, INITIAL_STATE)
@@ -78,11 +78,9 @@
 </script>
 
 <style scoped>
-  li a {
-    text-decoration: none;
-  }
-
-  li a:hover {
-    text-decoration: underline;
+  .artists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 </style>

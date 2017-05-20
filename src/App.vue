@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <h1>Vuetify</h1>
-    <hr>
-
+    <top />
     <search />
+    <bottom />
   </div>
 </template>
 
 <script>
-  // Importamos el componente de search
+  import Top from './components/layout/Top.vue'
+  import Bottom from './components/layout/Bottom.vue'
   import Search from './components/Search.vue'
 
   export default {
     name: 'app',
-    components: { Search }
+    components: { Search, Top, Bottom }
   }
 </script>
 
