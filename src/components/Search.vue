@@ -12,22 +12,27 @@
 
     <div v-show="results.length === 0 && !isLoading">No results found</div>
     <div v-show="isLoading">Loading...</div>
+
+    <toaster v-show="showToaster" :message="toasterMessage" @close="toggleToaster" />
   </div>
 </template>
 
 <script>
   import Artist from './Artist.vue'
+  import Toaster from './Toaster.vue'
   import spotify from '../services/spotify'
 
   const INITIAL_STATE = {
     query: '',
     results: [],
     isLoading: false,
+    showToaster: false,
+    toasterMessage: ''
   };
 
   export default {
     name: 'Search',
-    components: { Artist },
+    components: { Artist, Toaster },
 
     data() {
       return Object.assign({}, INITIAL_STATE)
@@ -54,15 +59,23 @@
     methods: {
       search() {
         this.isLoading = true
+        this.results = []
 
         spotify.search(this.query, 'artist')
           .then(res => {
-            this.isLoading = false
             this.results = res.artists.items
           })
+          .catch(err => {
+            this.toggleToaster()
+            this.toasterMessage = err
+          })
+          .then(() => this.isLoading = false)
       },
       reset() {
         Object.assign(this, INITIAL_STATE)
+      },
+      toggleToaster() {
+        this.showToaster = !this.showToaster
       }
     },
 
