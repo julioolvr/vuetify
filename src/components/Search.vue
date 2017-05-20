@@ -4,6 +4,8 @@
     <button @click="search">Search</button>
     <a href="#" @click.prevent="reset">Reset</a>
 
+    <div><small>{{ found }}</small></div>
+
     <ul v-show="results.length > 0 && !isLoading">
       <li v-for="result in results">
         <a :href="result.external_urls.spotify">{{ result.name }}</a>
@@ -26,9 +28,29 @@
 
   export default {
     name: 'Search',
+
     data() {
       return Object.assign({}, INITIAL_STATE)
     },
+
+    computed: {
+      found() {
+        const itemsCount = this.results.length;
+
+        if (itemsCount > 0) {
+          return `${itemsCount} items found`
+        } else {
+          return ''
+        }
+      }
+    },
+
+    watch: {
+      query(newVal, oldVal) {
+        console.log('changed query from', oldVal, 'to', newVal)
+      }
+    },
+
     methods: {
       search() {
         this.isLoading = true
